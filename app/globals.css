@@ -1,0 +1,351 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-paper: 250 250 248;
+  --color-surface: 241 241 238;
+  --color-ink: 22 24 27;
+  --color-slate: 91 97 105;
+  --color-hairline: 222 223 220;
+  --color-accent: 43 94 99;
+  --color-accent-dim: 228 236 235;
+}
+
+.dark {
+  --color-paper: 17 19 21;
+  --color-surface: 27 30 34;
+  --color-ink: 242 243 241;
+  --color-slate: 155 161 168;
+  --color-hairline: 43 47 52;
+  --color-accent: 79 176 181;
+  --color-accent-dim: 27 44 44;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: rgb(var(--color-paper));
+  color: rgb(var(--color-ink));
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Aurora glow, scoped and clipped entirely inside the hero section */
+.hero-aurora {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-aurora-blob {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(70px);
+}
+
+.hero-aurora-blob--a {
+  top: -15%;
+  left: -5%;
+  width: 46%;
+  height: 70%;
+  background: radial-gradient(
+    circle,
+    rgb(var(--color-accent) / 0.32),
+    transparent 72%
+  );
+  animation: aurora-drift-a 22s ease-in-out infinite alternate;
+}
+
+.hero-aurora-blob--b {
+  top: 8%;
+  right: -8%;
+  width: 40%;
+  height: 60%;
+  background: radial-gradient(
+    circle,
+    rgb(var(--color-accent) / 0.22),
+    transparent 72%
+  );
+  animation: aurora-drift-b 26s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-drift-a {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(6%, 8%) scale(1.15);
+  }
+}
+
+@keyframes aurora-drift-b {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-8%, -6%) scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Visible keyboard focus, everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgb(var(--color-accent));
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Section label: animated terminal-prompt eyebrow, the site's signature motif */
+.terminal-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: rgb(var(--color-slate));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.terminal-label-prompt {
+  color: rgb(var(--color-accent));
+  font-weight: 600;
+}
+
+.terminal-cursor {
+  width: 6px;
+  height: 1em;
+  background: rgb(var(--color-accent));
+  display: inline-block;
+  animation: blink 1s step-end infinite;
+}
+
+.terminal-cursor--typing {
+  animation: none;
+  opacity: 1;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Hairline divider used between sections */
+.hairline {
+  border-top: 1px solid rgb(var(--color-hairline));
+}
+
+/* Commit-style marker used in the experience timeline */
+.commit-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: rgb(var(--color-paper));
+  border: 2px solid rgb(var(--color-accent));
+  flex-shrink: 0;
+}
+
+.commit-line {
+  width: 1px;
+  background: rgb(var(--color-hairline));
+}
+
+/* Underline-on-hover link style, used for inline text links */
+.link-underline {
+  background-image: linear-gradient(
+    rgb(var(--color-accent)),
+    rgb(var(--color-accent))
+  );
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.2s ease;
+}
+
+.link-underline:hover,
+.link-underline:focus-visible {
+  background-size: 100% 1px;
+}
+
+/* Mock code editor window shown in the hero */
+.code-window {
+  border-radius: 0.5rem;
+  border: 1px solid rgb(var(--color-hairline));
+  background: rgb(var(--color-surface));
+  overflow: hidden;
+  box-shadow: 0 24px 60px -24px rgb(var(--color-ink) / 0.2);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.code-window:focus-within {
+  border-color: rgb(var(--color-accent) / 0.45);
+  box-shadow: 0 0 0 3px rgb(var(--color-accent) / 0.18),
+    0 24px 60px -24px rgb(var(--color-ink) / 0.2);
+}
+
+.code-window-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid rgb(var(--color-hairline));
+}
+
+.code-window-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.code-window-dot--red {
+  background: #f2726c;
+}
+
+.code-window-dot--yellow {
+  background: #f2c14e;
+}
+
+.code-window-dot--green {
+  background: #59c46a;
+}
+
+.code-window-filename {
+  margin-left: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: rgb(var(--color-slate));
+}
+
+.code-window-body {
+  margin: 0;
+  padding: 1.25rem 1.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: rgb(var(--color-ink));
+  white-space: pre;
+  overflow-x: auto;
+  min-height: 172px;
+}
+
+.tok-string {
+  color: rgb(var(--color-accent));
+}
+
+.tok-keyword {
+  color: rgb(var(--color-accent));
+  font-weight: 600;
+}
+
+.tok-key {
+  color: rgb(var(--color-ink));
+  font-weight: 500;
+}
+
+/* Interactive terminal widget */
+.terminal-input {
+  caret-color: rgb(var(--color-accent));
+}
+
+.terminal-input::placeholder {
+  color: rgb(var(--color-slate));
+  opacity: 0.75;
+}
+
+.terminal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--color-hairline)) transparent;
+}
+
+.terminal-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-scroll::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-hairline));
+  border-radius: 999px;
+}
+
+.terminal-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #59c46a;
+  animation: live-pulse 2s ease-out infinite;
+}
+
+@keyframes live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(89 196 106 / 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgb(89 196 106 / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(89 196 106 / 0);
+  }
+}
+
+.terminal-line-in {
+  animation: line-in 0.22s ease-out;
+}
+
+@keyframes line-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered scroll-reveal used for experience, projects, and skills entries */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reveal-item--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
