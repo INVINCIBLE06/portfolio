@@ -1,5 +1,8 @@
+import { Kaushan_Script } from "next/font/google";
 import { site } from "@/lib/data";
 import ThemeToggle from "@/components/ThemeToggle";
+
+const monogram = Kaushan_Script({ subsets: ["latin"], weight: "400" });
 
 const links = [
   { href: "#about", label: "About" },
@@ -16,11 +19,18 @@ export default function Nav() {
         aria-label="Primary"
         className="mx-auto flex max-w-wide items-center justify-between px-6 py-4 md:px-10"
       >
+        {/* Signature-style monogram — uses the theme's ink/accent tokens so
+            it flips with light/dark mode instead of staying a fixed color. */}
         <a
           href="#top"
-          className="font-display text-sm font-semibold tracking-widish text-ink"
+          aria-label={`${site.name} — back to top`}
+          className="group flex h-12 w-12 flex-shrink-0 items-center justify-center transition-transform duration-300 ease-out hover:scale-110"
         >
-          {site.name}
+          <span
+            className={`${monogram.className} text-3xl leading-none tracking-tight text-ink transition-colors duration-200 group-hover:text-accent`}
+          >
+            SP
+          </span>
         </a>
         <ul className="hidden gap-1 text-[14px] font-medium text-slate md:flex">
           {links.map((link) => (
